@@ -18,13 +18,14 @@ import subprocess
 subprocess.call('export GOOGLE_APPLICATION_CREDENTIALS=/home/stas/SS/google.json', shell=True)
 subprocess.call('export GCLOUD_PROJECT=smartspeaker-207611', shell=True)
 
-
+volume = 20;
 
 def run_quickstart():
     # [START speech_quickstart]
     import io
     import os
-    
+    import re
+
 
     # Imports the Google Cloud client library
     # [START migration_import]
@@ -61,8 +62,41 @@ def run_quickstart():
 
     for result in response.results:
         print(result.alternatives[0].transcript)
+	
+	if re.search(r'\bradio\b', result.alternatives[0].transcript):
+	    if re.search(r'\bstart\b', result.alternatives[0].transcript):
+		#subprocess.call('', shell=True)
+		subprocess.call('amixer set \'Master\' ' + volume + ' unmute', shell=True)
+		subprocess.call('mplayer -slave -quiet '+'http://online-radioroks2.tavrmedia.ua/RadioROKS_NewRock'+' </dev/null >/dev/null 2>&1 &', shell=True)
+	        print("Radio On")
+            if re.search(r'\bstop\b', result.alternatives[0].transcript):
+		subprocess.call('pkill mplayer', shell=True)
+	        print("Radio Off")
+
+	if re.search(r'\bvolume\b', result.alternatives[0].transcript):
+	    if re.search(r'\boff\b', result.alternatives[0].transcript):
+		subprocess.call('amixer set \'Master\' mute', shell=True)
+		print("volume off")
+	    if re.search(r'\bmute\b', result.alternatives[0].transcript):
+		subprocess.call('amixer set \'Master\' mute', shell=True)
+		print("volume mute")
+	    if re.search(r'\bon\b', result.alternatives[0].transcript):
+		subprocess.call('amixer set \'Master\' ' + volume + ' unmute', shell=True)
+		print("volume on")
+	    if re.search(r'\b20\b', result.alternatives[0].transcript):
+		volume = 20
+		subprocess.call('amixer set \'Master\' 20% unmute', shell=True)
+		print("volume 20%")
+    	    if re.search(r'\b50\b', result.alternatives[0].transcript):
+		volume = 50
+		subprocess.call('amixer set \'Master\' 50% unmute', shell=True)
+		print("volume 50%")
+    
     # [END speech_quickstart]
 
 
 if __name__ == '__main__':
-    run_quickstart()
+    if True:
+        run_quickstart()
+
+    print("Script end")
