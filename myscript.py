@@ -18,7 +18,7 @@ import subprocess
 subprocess.call('export GOOGLE_APPLICATION_CREDENTIALS=/home/stas/SS/google.json', shell=True)
 subprocess.call('export GCLOUD_PROJECT=smartspeaker-207611', shell=True)
 
-volume = 20;
+
 
 def run_quickstart():
     # [START speech_quickstart]
@@ -26,16 +26,20 @@ def run_quickstart():
     import os
     import re
 
-
+    volume = 20
     # Imports the Google Cloud client library
     # [START migration_import]
     from google.cloud import speech
     from google.cloud.speech import enums
     from google.cloud.speech import types
     # [END migration_import]
+    subprocess.call('amixer set \'Master\' mute', shell=True)
+    print('Volume Mute')
     print('Start rec to file')
     subprocess.call('rec -r 16k -e signed-integer -b 16 -c 1 resources/audio.raw trim 0 5', shell=True)
     print('Stop rec to file')
+    subprocess.call('amixer set \'Master\' ' + str(volume) + ' unmute', shell=True)
+    print('Volume unmute')
     # Instantiates a client
     # [START migration_client]
     client = speech.SpeechClient()
