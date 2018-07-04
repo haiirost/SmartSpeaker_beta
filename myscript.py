@@ -34,6 +34,7 @@ def run_quickstart():
     # [END migration_import]
     print('Start rec to file')
     subprocess.call('rec -r 16k -e signed-integer -b 16 -c 1 resources/audio.raw trim 0 5', shell=True)
+    print('Stop rec to file')
     # Instantiates a client
     # [START migration_client]
     client = speech.SpeechClient()
@@ -59,7 +60,7 @@ def run_quickstart():
     response = client.recognize(config, audio)
 
     for result in response.results:
-        print('Transcript: {}'.format(result.alternatives[0].transcript))
+        print(result.alternatives[0].transcript)
     # [END speech_quickstart]
 
 
