@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import subprocess
-subprocess.call('export GOOGLE_APPLICATION_CREDENTIALS=/home/stas/SS/google.json', shell=True)
+subprocess.call('export GOOGLE_APPLICATION_CREDENTIALS=/home/u/ss/google.json', shell=True)
 subprocess.call('export GCLOUD_PROJECT=smartspeaker-207611', shell=True)
 
 
